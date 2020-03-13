@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 		Vector3 dir = new Vector3(xinput, 0, zinput) * moveSpeed;
 		dir.y = rg.velocity.y;
 
-		rg.velocity = dir;
+		rg.velocity = transform.TransformDirection(dir);
 	}
 
 	void TryJump()
