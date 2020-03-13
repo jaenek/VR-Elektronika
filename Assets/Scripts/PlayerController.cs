@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	public float moveSpeed;
-	public float jumpForce;
+	[SerializeField]
+	private float moveSpeed;
+	[SerializeField]
+	private float jumpForce;
 	private Rigidbody rg;
 
     void Awake()
@@ -13,15 +15,18 @@ public class PlayerController : MonoBehaviour
 		rg = GetComponent<Rigidbody>();
     }
 
-	void Update() {
+	void Update()
+	{
 		Move();
 
-		if (Input.GetButtonDown("Jump")) {
+		if (Input.GetButtonDown("Jump"))
+		{
 			TryJump();
 		}
 	}
 
-	void Move() {
+	void Move()
+	{
 		float xinput = Input.GetAxis("Horizontal");
 		float yinput = Input.GetAxis("Jump");
 		float zinput = Input.GetAxis("Vertical");
@@ -32,7 +37,8 @@ public class PlayerController : MonoBehaviour
 		rg.velocity = dir;
 	}
 
-	void TryJump() {
+	void TryJump()
+	{
 		Ray ray1 = new Ray(transform.position + new Vector3(-0.5f, 0,  0.5f), Vector3.down);
 		Ray ray2 = new Ray(transform.position + new Vector3( 0.5f, 0,  0.5f), Vector3.down);
 		Ray ray3 = new Ray(transform.position + new Vector3(-0.5f, 0, -0.5f), Vector3.down);
@@ -43,7 +49,8 @@ public class PlayerController : MonoBehaviour
 		bool cast3 = Physics.Raycast(ray3, 1.2f);
 		bool cast4 = Physics.Raycast(ray4, 1.2f);
 
-		if (cast1 || cast2 || cast3 || cast4) {
+		if (cast1 || cast2 || cast3 || cast4)
+		{
 			rg.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 		}
 	}
