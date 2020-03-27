@@ -8,6 +8,11 @@ public class PlayerController : MonoBehaviour
 	private float moveSpeed;
 	[SerializeField]
 	private float jumpForce;
+	[SerializeField]
+	private float maxInteractionDistance;
+	[SerializeField]
+	private GameObject selection;
+	[SerializeField]
 	private Rigidbody rg;
 
     void Awake()
@@ -18,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		Move();
+		HighlightSelection();
 
 		if (Input.GetButtonDown("Jump"))
 		{
@@ -52,6 +58,24 @@ public class PlayerController : MonoBehaviour
 		if (cast1 || cast2 || cast3 || cast4)
 		{
 			rg.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		}
+	}
+
+	void HighlightSelection()
+	{
+        RaycastHit hit;
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, maxInteractionDistance))
+        {
+			// TODO: if intersects an item call item.Highlight
+			selection.SetActive(true);
+			SelectionController.instance.PointTo(hit.point);
+        }
+		else
+		{
+			selection.SetActive(false);
+			SelectionController.instance.enabled = true;
 		}
 	}
 }
