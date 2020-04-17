@@ -17,7 +17,7 @@ public class SelectionController : MonoBehaviour
             Mathf.Floor(pos.z / 0.5f) * 0.5f + 0.25f
         );
 
-        Debug.Log("pointing to (" + pos.x + ", " + pos.z + ")");
+        //Debug.Log("pointing to (" + pos.x + ", " + pos.z + ")");
 
         transform.position = pos;
     }

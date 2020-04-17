@@ -39,6 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8321691919594969357}
+  - component: {fileID: 4575604836117551103}
   m_Layer: 0
   m_Name: Capacitor
   m_TagString: Untagged
@@ -62,6 +63,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &4575604836117551103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4983179579803085598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d27a684d38e6148b0b24b7ad8ed65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 21300000, guid: 47a698c1e1bcd9642b682ec385befc6b, type: 3}
+  itemName: Capacitor
 --- !u!1 &5077103142517757131
 GameObject:
   m_ObjectHideFlags: 0

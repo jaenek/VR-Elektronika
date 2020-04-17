@@ -197,6 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2341450241161876354}
+  - component: {fileID: 6494004381894021578}
   m_Layer: 0
   m_Name: LiPo 7.4V
   m_TagString: Untagged
@@ -221,6 +222,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &6494004381894021578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595920573414908305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d27a684d38e6148b0b24b7ad8ed65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 21300000, guid: e0fa62644a28fd54390fe935983467cd, type: 3}
+  itemName: LiPo Battery 7.4V
 --- !u!1 &1784116007603023964
 GameObject:
   m_ObjectHideFlags: 0
