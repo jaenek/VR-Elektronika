@@ -5,9 +5,12 @@ using UnityEngine;
 public class SelectionController : MonoBehaviour
 {
     public static SelectionController instance;
+    public GameObject placeholderOrigin;
+    private Vector3 defaultPlaceholderSize;
 
     void Awake() {
         instance = this;
+        defaultPlaceholderSize = placeholderOrigin.transform.localScale;
     }
 
     public void PointTo(Vector3 pos) {
@@ -17,8 +20,36 @@ public class SelectionController : MonoBehaviour
             Mathf.Floor(pos.z / 0.5f) * 0.5f + 0.25f
         );
 
-        //Debug.Log("pointing to (" + pos.x + ", " + pos.z + ")");
-
         transform.position = pos;
+    }
+
+    public void Toggle() //Toggle visibility of placeholder
+    {
+        placeholderOrigin.SetActive(!placeholderOrigin.activeSelf);
+    }
+
+    public void ToggleState(bool state) //Set visibility of placeholder
+    {
+
+        placeholderOrigin.SetActive(state);
+    }
+
+    public void SetPlaceholderSize(Vector3 size) //Set placeholder size
+    {
+        placeholderOrigin.transform.localScale = Vector3.Scale(size,defaultPlaceholderSize);
+    }
+
+    public void PlaceItem() //Place item and hide placeholder
+    {
+        var item = transform.GetChild(1);
+        item.GetChild(0).tag = "Placed";
+        item.parent = null;
+        ToggleState(false);
+    }
+
+    public void DiscardPlacing() //Destroy selected object and hide placeholder
+    {
+        Destroy(transform.GetChild(1).gameObject);
+        ToggleState(false);
     }
 }

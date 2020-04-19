@@ -14,20 +14,47 @@ public class PlayerController : MonoBehaviour
 	private GameObject selection;
 	[SerializeField]
 	private Rigidbody rg;
+	[SerializeField]
+	private GameObject inventory;
+	[SerializeField]
+	private Material placeholderPossibleMaterial;
+	[SerializeField]
+	private Material placeholderImpossibleMaterial;
 
-    void Awake()
+	public bool isPlacing = false;
+
+	void Awake()
     {
 		rg = GetComponent<Rigidbody>();
+		inventory.SetActive(false);
     }
 
 	void Update()
 	{
-		Move();
-		HighlightSelection();
-
-		if (Input.GetButtonDown("Jump"))
+		if(!inventory.activeSelf)
 		{
-			TryJump();
+			Move();
+			HighlightSelection();
+
+			if (Input.GetButtonDown("Jump"))
+			{
+				TryJump();
+			}
+
+			if(isPlacing) //Is in placing state
+			{
+				Place();
+			}
+		}
+		else
+		{
+			//Stops player while in inventory
+			rg.velocity = Vector3.zero;
+		}
+
+		if(Input.GetKeyDown(KeyCode.E))
+		{
+			OpenInventory();
 		}
 	}
 
@@ -76,6 +103,65 @@ public class PlayerController : MonoBehaviour
 		{
 			selection.SetActive(false);
 			SelectionController.instance.enabled = true;
+		}
+	}
+
+	void Place() //Fires when user is in placing state
+	{
+		var placeholder = selection.transform.GetChild(0).GetChild(0);
+		var placeholderCollider = placeholder.GetComponent<ColliderState>();
+		var selectionController = selection.GetComponent<SelectionController>();
+		if(Input.GetAxis("Mouse ScrollWheel") > 0f)
+		{
+			selection.transform.Rotate(new Vector3(0,1,0), 90);
+		}
+		else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
+		{
+			selection.transform.Rotate(new Vector3(0, 1, 0), -90);
+		}
+
+		if (!placeholderCollider.isSomethingWithin)
+		{
+			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleMaterial; //Set material to green
+			if (Input.GetButtonDown("Fire1")) //Place item and leave placing state
+			{
+				selectionController.PlaceItem();
+				ChangePlacing(false);
+				placeholderCollider.isSomethingWithin = false;
+			}
+			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
+			{
+				selectionController.DiscardPlacing();
+				ChangePlacing(false);
+				placeholderCollider.isSomethingWithin = false;
+			}
+		}
+		else if (Input.GetButtonDown("Fire2")) //Abandon placing state
+		{
+			selectionController.DiscardPlacing();
+			ChangePlacing(false);
+			placeholderCollider.isSomethingWithin = false;
+		}
+		else
+		{
+			placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial; //Set material to red
+		}
+	}
+
+	public void ChangePlacing(bool state) //Change placing state
+	{
+		isPlacing = state;
+	}
+
+	public void OpenInventory() //Open or hide inventory menu
+	{
+		if (inventory.activeSelf)
+		{
+			inventory.SetActive(false);
+		}
+		else
+		{
+			inventory.SetActive(true);
 		}
 	}
 }

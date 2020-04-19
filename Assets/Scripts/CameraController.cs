@@ -10,17 +10,26 @@ public class CameraController : MonoBehaviour
 	private Vector3 offset;
 	[SerializeField]
 	private float mouseSensitivity;
-	private float xAxisClamp; 
+	private float xAxisClamp;
+	[SerializeField]
+	private GameObject inventory;
 
 	void Update()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
-		RotateCamera();
+		if(!inventory.activeSelf)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			RotateCamera();
 
-		if (target == null)
-			return;
+			if (target == null)
+				return;
 
-		transform.position = target.position + offset;
+			transform.position = target.position + offset;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.None;
+		}
 	}
 
 	void RotateCamera()
