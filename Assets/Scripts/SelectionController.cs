@@ -6,7 +6,7 @@ public class SelectionController : MonoBehaviour
 {
     public static SelectionController instance;
     public GameObject placeholderOrigin;
-    private Vector3 defaultPlaceholderSize;
+    public Vector3 defaultPlaceholderSize;
 
     void Awake() {
         instance = this;
@@ -30,7 +30,6 @@ public class SelectionController : MonoBehaviour
 
     public void ToggleState(bool state) //Set visibility of placeholder
     {
-
         placeholderOrigin.SetActive(state);
     }
 
@@ -39,11 +38,22 @@ public class SelectionController : MonoBehaviour
         placeholderOrigin.transform.localScale = Vector3.Scale(size,defaultPlaceholderSize);
     }
 
+    public void RotateSelectionBy(int degrees) // Add degrees to actual rotation in y axis
+    {
+        transform.Rotate(new Vector3(0, 1, 0), degrees);
+    }
+
+    public void RotateSelectionTo(float x, float y, float z) //Set specific rotation angle
+    {
+        transform.eulerAngles = new Vector3(x,y,z);
+    }
+
     public void PlaceItem() //Place item and hide placeholder
     {
-        var item = transform.GetChild(1);
-        item.GetChild(0).tag = "Placed";
-        item.parent = null;
+        var item = transform.GetChild(2);
+        item.GetComponent<ItemClass>().originTransform = placeholderOrigin.transform.position; //sets object origin point to actual selection plane origin
+        item.GetChild(0).tag = "Placed"; //assign tag to object for verify in ColliderState
+        item.parent = null; //detach object
         ToggleState(false);
     }
 

@@ -32,9 +32,9 @@ public class ItemList : MonoBehaviour
 
     public void OnItemSelected(int index) //Fires when user select an object to place
     {
-        if(selection.transform.childCount > 1)
+        if(selection.transform.childCount > 2)
         {
-            Destroy(selection.transform.GetChild(1).gameObject); //Destroy previous selection object
+            Destroy(selection.transform.GetChild(2).gameObject); //Destroy previous selection object
         }
         var selectionController = selection.GetComponent<SelectionController>();
         selectionController.ToggleState(true); //Show placeholder

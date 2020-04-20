@@ -22,12 +22,20 @@ public class PlayerController : MonoBehaviour
 	private Material placeholderImpossibleMaterial;
 
 	public bool isPlacing = false;
-
+	public bool isDestroying = false;
+	private Transform placeholder;
+	private ColliderState placeholderCollider;
+	private SelectionController selectionController;
+	private Vector3 defaultOriginLocalPosition;
 	void Awake()
     {
 		rg = GetComponent<Rigidbody>();
 		inventory.SetActive(false);
-    }
+		placeholder = selection.transform.GetChild(0).GetChild(0);
+		placeholderCollider = placeholder.GetComponent<ColliderState>();
+		selectionController = selection.GetComponent<SelectionController>();
+		defaultOriginLocalPosition = selectionController.placeholderOrigin.transform.localPosition;
+	}
 
 	void Update()
 	{
@@ -40,10 +48,18 @@ public class PlayerController : MonoBehaviour
 			{
 				TryJump();
 			}
+			else if(Input.GetKeyDown(KeyCode.Q))
+			{
+				ChangeDestroying(true);
+			}
 
 			if(isPlacing) //Is in placing state
 			{
-				Place();
+				PlaceItem();
+			}
+			else if(isDestroying) //Is in destroing state
+			{
+				DeleteItem();
 			}
 		}
 		else
@@ -106,18 +122,15 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	void Place() //Fires when user is in placing state
+	void PlaceItem() //Fires when user is in placing state
 	{
-		var placeholder = selection.transform.GetChild(0).GetChild(0);
-		var placeholderCollider = placeholder.GetComponent<ColliderState>();
-		var selectionController = selection.GetComponent<SelectionController>();
 		if(Input.GetAxis("Mouse ScrollWheel") > 0f)
 		{
-			selection.transform.Rotate(new Vector3(0,1,0), 90);
+			selection.GetComponent<SelectionController>().RotateSelectionBy(90); //Rotate item
 		}
 		else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
 		{
-			selection.transform.Rotate(new Vector3(0, 1, 0), -90);
+			selection.GetComponent<SelectionController>().RotateSelectionBy(-90); //Rotate item
 		}
 
 		if (!placeholderCollider.isSomethingWithin)
@@ -127,20 +140,18 @@ public class PlayerController : MonoBehaviour
 			{
 				selectionController.PlaceItem();
 				ChangePlacing(false);
-				placeholderCollider.isSomethingWithin = false;
+				
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
 				selectionController.DiscardPlacing();
 				ChangePlacing(false);
-				placeholderCollider.isSomethingWithin = false;
 			}
 		}
 		else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 		{
 			selectionController.DiscardPlacing();
 			ChangePlacing(false);
-			placeholderCollider.isSomethingWithin = false;
 		}
 		else
 		{
@@ -148,10 +159,51 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	//Move to SelectionController.cs
+	public void DeleteItem() //Fires when user is in destroying state
+	{
+		var objectIn = placeholderCollider.objectIn;
+		
+		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object 
+		{
+			selectionController.placeholderOrigin.transform.position = objectIn.GetComponent<ItemClass>().originTransform; //assign origin of selection placeholder to object origin point
+		}
+		else
+		{
+			selectionController.placeholderOrigin.transform.localPosition = defaultOriginLocalPosition; //unassign placeholder from object
+		}
+		selectionController.SetPlaceholderSize(objectIn != null ? objectIn.GetComponent<ItemClass>().size : Vector3.one); //If any object in, set placeholder size to this object size, otherwise 1
+		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
+
+		if (Input.GetButtonDown("Fire1") && objectIn != null) //Place item and leave placing state
+		{
+			Destroy(placeholderCollider.objectIn.gameObject); //Destroy object
+		}
+		else if (Input.GetButtonDown("Fire2")) //Abandon destroying state
+		{
+			ChangeDestroying(false);
+		}
+		//placeholder.transform.localPosition = placeholderCollider.lastObjectIn.transform.localPosition;
+
+	}
+
 	public void ChangePlacing(bool state) //Change placing state
 	{
 		isPlacing = state;
+		placeholderCollider.isSomethingWithin = false;
+		if(!state)
+		{
+			selectionController.SetPlaceholderSize(Vector3.one);
+		}
 	}
+
+	public void ChangeDestroying(bool state) //Change destroying state
+	{
+		isDestroying = state;
+		selection.transform.GetChild(0).gameObject.SetActive(state);
+		placeholder.GetComponent<MeshRenderer>().material = state ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
+	}
+	
 
 	public void OpenInventory() //Open or hide inventory menu
 	{
@@ -161,7 +213,17 @@ public class PlayerController : MonoBehaviour
 		}
 		else
 		{
+			selectionController.ToggleState(false); //Hide placeholder
+			if (selection.transform.childCount > 2)
+			{
+				Destroy(selection.transform.GetChild(2).gameObject); //Destroy previous selection object
+			}
+			isPlacing = false; //sets default settings
+			isDestroying = false; //sets default settings
+			selectionController.SetPlaceholderSize(Vector3.one); //sets default settings
 			inventory.SetActive(true);
 		}
+		placeholderCollider.objectIn = null; //sets default settings
+		placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleMaterial; //sets default settings
 	}
 }
