@@ -160,12 +160,16 @@ MonoBehaviour:
   selection: {fileID: 2128342418}
   rg: {fileID: 0}
   inventory: {fileID: 1104780886}
+  circuit: {fileID: 554445251}
   placeholderPossibleMaterial: {fileID: 2100000, guid: 27e5ca2f8192c444d9a996cd26444064,
+    type: 2}
+  placeholderPossibleConnectionMaterial: {fileID: 2100000, guid: f008dc19d56b5684fa251746b55d9015,
     type: 2}
   placeholderImpossibleMaterial: {fileID: 2100000, guid: 44be8f4c3de36054894bdeaf21625b4a,
     type: 2}
   isPlacing: 0
   isDestroying: 0
+  isConnecting: 0
 --- !u!54 &531577911
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -256,6 +260,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &554445251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 554445252}
+  - component: {fileID: 554445253}
+  m_Layer: 0
+  m_Name: Circuit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &554445252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554445251}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.25, y: 0.01, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &554445253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554445251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3ddd12b6412ab43b82f82afcce27ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &645374356
 GameObject:
   m_ObjectHideFlags: 0
