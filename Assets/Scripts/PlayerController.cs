@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private GameObject inventory;
 	[SerializeField]
+	private GameObject circuit;
+	[SerializeField]
 	private Material placeholderPossibleMaterial;
 	[SerializeField]
 	private Material placeholderPossibleConnectionMaterial;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	private Transform placeholder;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
+	private CircuitController circuitController;
 	private Vector3 defaultOriginLocalPosition;
 	void Awake()
     {
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour
 		placeholder = selection.transform.GetChild(0).GetChild(0);
 		placeholderCollider = placeholder.GetComponent<ColliderState>();
 		selectionController = selection.GetComponent<SelectionController>();
+		circuitController = circuit.GetComponent<CircuitController>();
 		defaultOriginLocalPosition = selectionController.placeholderOrigin.transform.localPosition;
 	}
 
@@ -210,7 +214,7 @@ public class PlayerController : MonoBehaviour
 			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleConnectionMaterial; //Set material to blue
 			if (Input.GetButtonDown("Fire1")) //Add item to circuit
 			{
-				CircuitController.AddConnection(placeholderCollider.objectIn.gameObject);
+				circuitController.AddConnection(ref objectIn);
 			}
 		}
 		else
@@ -220,7 +224,7 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetButtonDown("Fire2")) //Abandon connecting state
 		{
-			CircuitController.DiscardConnection();
+			circuitController.DiscardConnection();
 			ChangeConnecting(false);
 		}
 	}
