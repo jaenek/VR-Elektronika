@@ -2,39 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CircuitController
+public class CircuitController : MonoBehaviour
 {
     public static CircuitController instance;
 
-    private class Connection
+    void Awake()
     {
-        public GameObject input;
-        public List<GameObject> output;
+        instance = this;
+    }
 
-        public Connection(GameObject obj)
-        {
-            input = obj;
-        }
+    private class Node
+    {
+        public List<GameObject> elements = new List<GameObject>();
 
-        public void AddOutput(GameObject obj)
+        public Node(ref GameObject obj)
         {
-            output.Add(obj);
+            elements.Add(obj);
         }
     }
     
-    private static List<Connection> Connections;
+    private static List<Node> Nodes = new List<Node>();
 
-    public static void AddConnection(GameObject obj)
+    private void AddNode(ref GameObject element)
     {
-        Connections.Add(new Connection(obj));
+        Nodes.Add(new Node(ref element));
     }
 
-    public static void DiscardConnection()
+    private Node LastNode()
     {
-        Connection last = Connections[Connections.Count-1];
+        return Nodes[Nodes.Count-1];
+    }
 
-        if (last.output.Count == 0) {
-            Connections.Remove(last);
+    private void AddElementToLastNode(ref GameObject element)
+    {
+        LastNode().elements.Add(element);
+    }
+
+    public void AddConnection(ref GameObject element)
+    {
+        if (Nodes.Count > 0)
+        {
+            if (LastNode().elements.Contains(element))
+            {
+                AddNode(ref element);
+            }
+            else {
+                AddElementToLastNode(ref element);
+            }
+        }
+        else
+        {
+            AddNode(ref element);
+        }
+    }
+
+    public void DiscardConnection()
+    {
+        if (LastNode().elements.Count == 1) {
+            Nodes.Remove(LastNode());
         }
     }
 }
