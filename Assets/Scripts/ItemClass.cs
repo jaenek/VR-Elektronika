@@ -9,4 +9,17 @@ public class ItemClass : MonoBehaviour
     public string itemName;
     public Vector3Int size;
     public Vector3 originTransform = Vector3.down;
+	public List<ConnectionClass> connections;
+
+	public ConnectionClass GetFreeConnection()
+	{
+		foreach (var conn in connections)
+		{
+			if (!conn.connected)
+			{
+				return conn;
+			}
+		}
+		return null;
+	}
 }
