@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
 			{
 				selectionController.PlaceItem();
 				ChangePlacing(false);
-				
+
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
@@ -178,8 +178,8 @@ public class PlayerController : MonoBehaviour
 	public void DeleteItem() //Fires when user is in destroying state
 	{
 		var objectIn = placeholderCollider.objectIn;
-		
-		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object 
+
+		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object
 		{
 			selectionController.placeholderOrigin.transform.position = objectIn.GetComponent<ItemClass>().originTransform; //assign origin of selection placeholder to object origin point
 		}
@@ -214,7 +214,8 @@ public class PlayerController : MonoBehaviour
 			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleConnectionMaterial; //Set material to blue
 			if (Input.GetButtonDown("Fire1")) //Add item to circuit
 			{
-				circuitController.AddConnection(ref objectIn);
+				var element = objectIn.GetComponent<ItemClass>();
+				circuitController.AddConnection(element);
 			}
 		}
 		else
@@ -245,7 +246,7 @@ public class PlayerController : MonoBehaviour
 		selection.transform.GetChild(0).gameObject.SetActive(state);
 		placeholder.GetComponent<MeshRenderer>().material = state ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
 	}
-	
+
 	public void ChangeConnecting(bool state) //Change connecting state
 	{
 		isConnecting = state;

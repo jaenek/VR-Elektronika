@@ -13,53 +13,49 @@ public class CircuitController : MonoBehaviour
 
     private class Node
     {
-        public List<GameObject> elements = new List<GameObject>();
+        public List<ConnectionClass> connections = new List<ConnectionClass>();
 
-        public Node(ref GameObject obj)
+        public Node(ConnectionClass conn)
         {
-            elements.Add(obj);
+           	connections.Add(conn);
+			conn.connected = true;
         }
     }
-    
-    private static List<Node> Nodes = new List<Node>();
 
-    private void AddNode(ref GameObject element)
-    {
-        Nodes.Add(new Node(ref element));
-    }
+    private static List<Node> nodes = new List<Node>();
 
     private Node LastNode()
     {
-        return Nodes[Nodes.Count-1];
+        return nodes[nodes.Count-1];
     }
 
-    private void AddElementToLastNode(ref GameObject element)
+    public void AddConnection(ItemClass element)
     {
-        LastNode().elements.Add(element);
-    }
-
-    public void AddConnection(ref GameObject element)
-    {
-        if (Nodes.Count > 0)
-        {
-            if (LastNode().elements.Contains(element))
-            {
-                AddNode(ref element);
-            }
-            else {
-                AddElementToLastNode(ref element);
-            }
-        }
-        else
-        {
-            AddNode(ref element);
-        }
+		var conn = element.GetFreeConnection();
+		if (conn != null)
+		{
+			if (nodes.Count > 0)
+			{
+				if (LastNode().connections.Contains(conn))
+				{
+        			nodes.Add(new Node(conn));
+				}
+				else {
+        			LastNode().connections.Add(conn);
+					conn.connected = true;
+				}
+			}
+			else
+			{
+				nodes.Add(new Node(conn));
+			}
+		}
     }
 
     public void DiscardConnection()
     {
-        if (LastNode().elements.Count == 1) {
-            Nodes.Remove(LastNode());
+        if (LastNode().connections.Count < 2) {
+            nodes.Remove(LastNode());
         }
     }
 }
