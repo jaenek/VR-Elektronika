@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 3282162781280532490}
   - component: {fileID: 527246106292285061}
   m_Layer: 0
-  m_Name: +
+  m_Name: + Diode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 21
   type: 0
   current: 0
   voltage: 0
@@ -238,7 +237,7 @@ GameObject:
   - component: {fileID: 2639322017883547671}
   - component: {fileID: 8474566549039132367}
   m_Layer: 0
-  m_Name: '-'
+  m_Name: '- Diode'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 22
   type: 1
   current: 0
   voltage: 0

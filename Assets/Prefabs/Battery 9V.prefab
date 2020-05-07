@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 8002359815536586416}
   - component: {fileID: 6889297596537068813}
   m_Layer: 0
-  m_Name: +
+  m_Name: + Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 11
   type: 0
   current: 0.03
   voltage: 9
@@ -224,7 +223,7 @@ GameObject:
   - component: {fileID: 3574486106111374921}
   - component: {fileID: 2616369097351233768}
   m_Layer: 0
-  m_Name: '-'
+  m_Name: '- Battery'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,7 +255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 12
   type: 1
   current: 0
   voltage: 0
