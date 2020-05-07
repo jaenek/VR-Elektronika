@@ -14,7 +14,6 @@ public class ConnectionClass : MonoBehaviour
 		Pin4
 	}
 
-	public int id;
 	public ConnectionType type;
 	public float current;
 	public float voltage;
