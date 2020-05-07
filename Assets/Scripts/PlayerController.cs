@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
 	public bool isPlacing = false;
 	public bool isDestroying = false;
 	public bool isConnecting = false;
+	public bool newConnection = false;
 	private Transform placeholder;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
@@ -58,10 +59,12 @@ public class PlayerController : MonoBehaviour
 			else if(Input.GetKeyDown(KeyCode.Q))
 			{
 				ChangeDestroying(true);
+
 			}
 			else if(Input.GetKeyDown(KeyCode.C))
 			{
 				ChangeConnecting(true);
+				newConnection = true;
 			}
 
 			if(isPlacing) //Is in placing state
@@ -215,7 +218,8 @@ public class PlayerController : MonoBehaviour
 			if (Input.GetButtonDown("Fire1")) //Add item to circuit
 			{
 				var element = objectIn.GetComponent<ItemClass>();
-				circuitController.AddConnection(element);
+				circuitController.AddConnection(element, newConnection);
+				newConnection = false;
 			}
 		}
 		else
