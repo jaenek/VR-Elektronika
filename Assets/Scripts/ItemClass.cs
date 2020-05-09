@@ -5,11 +5,35 @@ using UnityEngine.UI;
 
 public class ItemClass : MonoBehaviour
 {
+	public enum ItemType
+	{
+		Source,
+		Resistor,
+		Diode,
+		Other
+	}
+
     public Sprite itemImage;
     public string itemName;
-    public Vector3Int size;
-    public Vector3 originTransform = Vector3.down;
+    public ItemType type = ItemType.Other;
+	public Vector3Int size;
+	public Vector3 originTransform = Vector3.down;
 	public List<ConnectionClass> connections;
+	public int high = -1;
+	public int low = -1;
+
+	public ConnectionClass GetFreeConnection()
+	{
+		foreach (var conn in connections)
+		{
+			if (!conn.connected)
+			{
+				return conn;
+			}
+		}
+
+		return null;
+	}
 
 	public ConnectionClass GetClosestConnection()
 	{
@@ -32,17 +56,7 @@ public class ItemClass : MonoBehaviour
 
 			return closest;
         }
-		else
-		{
-			foreach (var conn in connections)
-			{
-				if (!conn.connected)
-				{
-					return conn;
-				}
-			}
-		}
 
-		return null;
+		return GetFreeConnection();
 	}
 }
