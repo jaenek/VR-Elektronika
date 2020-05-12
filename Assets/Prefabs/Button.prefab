@@ -48,6 +48,11 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: 6e26afe070584e7448377f6e03952193, type: 3}
   itemName: Button
   size: {x: 1, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  itemType: 4
+  resistance: 1
+  voltage: 0
+  capability: 0
 --- !u!54 &-6940150232497641906
 Rigidbody:
   m_ObjectHideFlags: 0

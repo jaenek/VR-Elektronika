@@ -59,7 +59,7 @@ public class SelectionController : MonoBehaviour
 
     public void DiscardPlacing() //Destroy selected object and hide placeholder
     {
-        Destroy(transform.GetChild(1).gameObject);
+        Destroy(transform.GetChild(2).gameObject);
         ToggleState(false);
     }
 }

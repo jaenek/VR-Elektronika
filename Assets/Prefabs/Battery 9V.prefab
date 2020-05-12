@@ -48,6 +48,11 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: f78df31d990f4aa408a9868c83b35ab3, type: 3}
   itemName: Battery 9V
   size: {x: 2, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  itemType: 1
+  resistance: 1
+  voltage: 9
+  capability: 0
 --- !u!54 &8342401578272187742
 Rigidbody:
   m_ObjectHideFlags: 0

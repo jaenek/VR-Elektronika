@@ -48,6 +48,11 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: 06b01c7f0075d154580d5f1d752b3e09, type: 3}
   itemName: Resistor
   size: {x: 1, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  itemType: 0
+  resistance: 100
+  voltage: 0
+  capability: 0
 --- !u!54 &5960957775348460892
 Rigidbody:
   m_ObjectHideFlags: 0
