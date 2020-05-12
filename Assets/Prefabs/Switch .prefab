@@ -224,6 +224,11 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: a0f32c268d38dc446be44503f9c376d5, type: 3}
   itemName: Switch
   size: {x: 1, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  itemType: 5
+  resistance: 1
+  voltage: 0
+  capability: 0
 --- !u!54 &-4318141277693490652
 Rigidbody:
   m_ObjectHideFlags: 0

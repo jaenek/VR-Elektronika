@@ -13,11 +13,16 @@ public class CameraController : MonoBehaviour
 	private float xAxisClamp;
 	[SerializeField]
 	private GameObject inventory;
+	[SerializeField]
+	private GameObject properties;
+	[SerializeField]
+	private GameObject player;
 
 	void Update()
 	{
-		if(!inventory.activeSelf)
+		if(!inventory.activeSelf && !properties.activeSelf)
 		{
+			player.GetComponent<Rigidbody>().useGravity = true;
 			Cursor.lockState = CursorLockMode.Locked;
 			RotateCamera();
 
@@ -28,6 +33,7 @@ public class CameraController : MonoBehaviour
 		}
 		else
 		{
+			player.GetComponent<Rigidbody>().useGravity = false;
 			Cursor.lockState = CursorLockMode.None;
 		}
 	}

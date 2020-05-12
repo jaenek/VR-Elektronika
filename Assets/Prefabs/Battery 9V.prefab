@@ -50,12 +50,19 @@ MonoBehaviour:
   type: 0
   size: {x: 2, y: 1, z: 1}
   originTransform: {x: 0, y: -1, z: 0}
+<<<<<<< HEAD
   connections:
   - {fileID: 6889297596537068813}
   - {fileID: 2616369097351233768}
   high: -1
   low: -1
   voltage: 9
+=======
+  itemType: 1
+  resistance: 1
+  voltage: 9
+  capability: 0
+>>>>>>> 78e9a67... add setting properties
 --- !u!54 &8342401578272187742
 Rigidbody:
   m_ObjectHideFlags: 0

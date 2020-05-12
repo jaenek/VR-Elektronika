@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,16 @@ public class ItemClass : MonoBehaviour
     public string itemName;
     public ItemType type = ItemType.Other;
 	public Vector3Int size;
+    [HideInInspector]
 	public Vector3 originTransform = Vector3.down;
 	public List<ConnectionClass> connections;
 	public int high = -1;
 	public int low = -1;
+    public enum Type { Resistor, Power_Supply, Capacitor, Engine, Switch, Other};
+    public Type itemType;
+    public float resistance;
+    public float voltage;
+    public float capacity;
 
 	public ConnectionClass GetFreeConnection()
 	{
