@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
 	public bool isPlacing = false;
 	public bool isDestroying = false;
 	public bool isConnecting = false;
+	public bool newConnection = false;
 	private Transform placeholder;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
@@ -58,10 +59,12 @@ public class PlayerController : MonoBehaviour
 			else if(Input.GetKeyDown(KeyCode.Q))
 			{
 				ChangeDestroying(true);
+
 			}
 			else if(Input.GetKeyDown(KeyCode.C))
 			{
 				ChangeConnecting(true);
+				newConnection = true;
 			}
 
 			if(isPlacing) //Is in placing state
@@ -155,7 +158,7 @@ public class PlayerController : MonoBehaviour
 			{
 				selectionController.PlaceItem();
 				ChangePlacing(false);
-				
+
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
@@ -178,8 +181,8 @@ public class PlayerController : MonoBehaviour
 	public void DeleteItem() //Fires when user is in destroying state
 	{
 		var objectIn = placeholderCollider.objectIn;
-		
-		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object 
+
+		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object
 		{
 			selectionController.placeholderOrigin.transform.position = objectIn.GetComponent<ItemClass>().originTransform; //assign origin of selection placeholder to object origin point
 		}
@@ -214,7 +217,9 @@ public class PlayerController : MonoBehaviour
 			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleConnectionMaterial; //Set material to blue
 			if (Input.GetButtonDown("Fire1")) //Add item to circuit
 			{
-				circuitController.AddConnection(ref objectIn);
+				var element = objectIn.GetComponent<ItemClass>();
+				circuitController.AddConnection(element, newConnection);
+				newConnection = false;
 			}
 		}
 		else
@@ -245,7 +250,7 @@ public class PlayerController : MonoBehaviour
 		selection.transform.GetChild(0).gameObject.SetActive(state);
 		placeholder.GetComponent<MeshRenderer>().material = state ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
 	}
-	
+
 	public void ChangeConnecting(bool state) //Change connecting state
 	{
 		isConnecting = state;

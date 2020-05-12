@@ -53,6 +53,10 @@ public class SelectionController : MonoBehaviour
         var item = transform.GetChild(2);
         item.GetComponent<ItemClass>().originTransform = placeholderOrigin.transform.position; //sets object origin point to actual selection plane origin
         item.GetChild(0).tag = "Placed"; //assign tag to object for verify in ColliderState
+        foreach (var conn in item.GetComponent<ItemClass>().connections)
+        {
+            conn.element = item.GetComponent<ItemClass>();
+        }
         item.parent = null; //detach object
         ToggleState(false);
     }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1320789663190056103}
-  - component: {fileID: 854548357761008407}
+  - component: {fileID: 4464666723715576981}
   - component: {fileID: 5960957775348460892}
   m_Layer: 0
   m_Name: Resistor
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &854548357761008407
+--- !u!114 &4464666723715576981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2598360293270982324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65d27a684d38e6148b0b24b7ad8ed65d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ee0403cc59805a4eb54586725197906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: 06b01c7f0075d154580d5f1d752b3e09, type: 3}
   itemName: Resistor
+  type: 1
   size: {x: 1, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  connections:
+  - {fileID: 6732620199451610406}
+  - {fileID: 2941787979943329591}
+  high: -1
+  low: -1
+  resistance: 100
 --- !u!54 &5960957775348460892
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -171,8 +179,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1301483975208606328}
+  - component: {fileID: 2941787979943329591}
   m_Layer: 0
-  m_Name: +
+  m_Name: Pin2 Resistor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,6 +201,23 @@ Transform:
   m_Father: {fileID: 1771370726825065463}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2941787979943329591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827241103343543405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  type: 3
+  current: 0
+  voltage: 0
+  connected: 0
 --- !u!1 &8117365314844087193
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,8 +227,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4328736112816477690}
+  - component: {fileID: 6732620199451610406}
   m_Layer: 0
-  m_Name: '-'
+  m_Name: Pin1 Resistor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,3 +249,20 @@ Transform:
   m_Father: {fileID: 1771370726825065463}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6732620199451610406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8117365314844087193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  type: 2
+  current: 0
+  voltage: 0
+  connected: 0

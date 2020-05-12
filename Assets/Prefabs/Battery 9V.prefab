@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2308329056862810412}
-  - component: {fileID: 3475503956529611035}
+  - component: {fileID: 3318077086999560778}
   - component: {fileID: 8342401578272187742}
   m_Layer: 0
   m_Name: Battery 9V
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3475503956529611035
+--- !u!114 &3318077086999560778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4763723601160827602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65d27a684d38e6148b0b24b7ad8ed65d, type: 3}
+  m_Script: {fileID: 11500000, guid: 38a06c5708a82444f901553ed6f20e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemImage: {fileID: 21300000, guid: f78df31d990f4aa408a9868c83b35ab3, type: 3}
   itemName: Battery 9V
+  type: 0
   size: {x: 2, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  connections:
+  - {fileID: 6889297596537068813}
+  - {fileID: 2616369097351233768}
+  high: -1
+  low: -1
+  voltage: 9
 --- !u!54 &8342401578272187742
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,8 +178,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8002359815536586416}
+  - component: {fileID: 6889297596537068813}
   m_Layer: 0
-  m_Name: +
+  m_Name: + Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,6 +200,23 @@ Transform:
   m_Father: {fileID: 7502253124185214550}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6889297596537068813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6169559183260643782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  type: 0
+  current: 0.03
+  voltage: 9
+  connected: 0
 --- !u!1 &8633331313241416494
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,8 +226,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3574486106111374921}
+  - component: {fileID: 2616369097351233768}
   m_Layer: 0
-  m_Name: '-'
+  m_Name: '- Battery'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,3 +248,20 @@ Transform:
   m_Father: {fileID: 7502253124185214550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2616369097351233768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8633331313241416494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  type: 1
+  current: 0
+  voltage: 0
+  connected: 0
