@@ -14,39 +14,76 @@ public class PropertiesController : MonoBehaviour
     private Slider resistanceSlider;
     private Slider voltageSlider;
     private Slider capacitySlider;
+    public enum Property { Resistance, Voltage, Capacity };
     // Start is called before the first frame update
-    void Awake()
+
+    private void Start()
     {
         resistanceUIObject = transform.GetChild(0).gameObject;
         voltageUIObject = transform.GetChild(1).gameObject;
         capacityUIObject = transform.GetChild(2).gameObject;
-    }
 
-    private void Start()
-    {
         resistanceSlider = resistanceUIObject.transform.GetChild(0).GetComponent<Slider>();
-        resistanceSlider.onValueChanged.AddListener(delegate { onResistanceChanged(); });
+        resistanceSlider.onValueChanged.AddListener(delegate { onValueChanged(Property.Resistance); });
         voltageSlider = voltageUIObject.transform.GetChild(0).GetComponent<Slider>();
-        voltageSlider.onValueChanged.AddListener(delegate { onVoltageChanged(); });
+        voltageSlider.onValueChanged.AddListener(delegate { onValueChanged(Property.Voltage); });
         capacitySlider = capacityUIObject.transform.GetChild(0).GetComponent<Slider>();
-        capacitySlider.onValueChanged.AddListener(delegate { onCapacityChanged(); });
+        capacitySlider.onValueChanged.AddListener(delegate { onValueChanged(Property.Capacity); });
     }
 
-    private void onResistanceChanged()
+
+    private void onValueChanged(Property propertyName)
     {
-        placeholderCollider.objectIn.GetComponent<ItemClass>().resistance = resistanceSlider.value;
-        resistanceUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = resistanceSlider.value.ToString();
+        var itemClass = placeholderCollider.objectIn.GetComponent<ItemClass>();
+        switch (propertyName)
+        {
+            case Property.Resistance:
+                itemClass.resistance = resistanceSlider.value;
+                resistanceUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = resistanceSlider.value.ToString();
+                break;
+
+            case Property.Voltage:
+                itemClass.voltage = voltageSlider.value;
+                voltageUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = voltageSlider.value.ToString();
+                break;
+            case Property.Capacity:
+                itemClass.capacity = capacitySlider.value;
+                capacityUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = capacitySlider.value.ToString();
+                break;
+
+        }
     }
 
-    private void onVoltageChanged()
+    public void SetValue(ItemClass objectIn, Property property, bool isActive)
     {
-        placeholderCollider.objectIn.GetComponent<ItemClass>().voltage = voltageSlider.value;
-        voltageUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = voltageSlider.value.ToString();
-    }
+        switch (property)
+        {
+            case Property.Resistance:
+                resistanceUIObject.gameObject.SetActive(isActive);
+                if(isActive)
+                {
+                    resistanceUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = objectIn.resistance.ToString();
+                    resistanceUIObject.transform.GetChild(0).GetComponent<Slider>().value = objectIn.resistance;
+                }
+                break;
 
-    private void onCapacityChanged()
-    {
-        placeholderCollider.objectIn.GetComponent<ItemClass>().capacity = capacitySlider.value;
-        capacityUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = capacitySlider.value.ToString();
+            case Property.Voltage:
+                voltageUIObject.gameObject.SetActive(isActive);
+                if (isActive)
+                {
+                    voltageUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = objectIn.voltage.ToString();
+                    voltageUIObject.transform.GetChild(0).GetComponent<Slider>().value = objectIn.voltage;
+                }
+                break;
+
+            case Property.Capacity:
+                capacityUIObject.gameObject.SetActive(isActive);
+                if (isActive)
+                {
+                    capacityUIObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = objectIn.capacity.ToString();
+                    capacityUIObject.transform.GetChild(0).GetComponent<Slider>().value = objectIn.capacity;
+                }
+                break;
+        }
     }
 }

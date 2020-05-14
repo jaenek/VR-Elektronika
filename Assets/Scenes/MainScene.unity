@@ -170,7 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   moveSpeed: 5
   jumpForce: 8
   maxInteractionDistance: 4
@@ -190,7 +189,6 @@ MonoBehaviour:
   newConnection: 0
 --- !u!54 &531577911
 Rigidbody:
-=======
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -209,7 +207,6 @@ Rigidbody:
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &54342626
 CanvasRenderer:
->>>>>>> 78e9a67... add setting properties
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -343,10 +340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   connectionMaterial: {fileID: 2100000, guid: 226b9b967ba1aff428625ae8e2dd07c3, type: 2}
 --- !u!1 &645374356
-=======
   m_Navigation:
     m_Mode: 3
     m_SelectOnUp: {fileID: 0}
@@ -386,7 +381,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &161074109
->>>>>>> 78e9a67... add setting properties
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1047,7 +1041,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 522075289}
   m_CullTransparentMesh: 0
-<<<<<<< HEAD
 --- !u!1 &916031906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,9 +1115,7 @@ CanvasRenderer:
   m_GameObject: {fileID: 916031906}
   m_CullTransparentMesh: 0
 --- !u!1 &963194225
-=======
 --- !u!1 &531577909
->>>>>>> 78e9a67... add setting properties
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1173,6 +1164,7 @@ MonoBehaviour:
     type: 2}
   placeholderImpossibleMaterial: {fileID: 2100000, guid: 44be8f4c3de36054894bdeaf21625b4a,
     type: 2}
+  propertiesController: {fileID: 750855262}
   isPlacing: 0
   isDestroying: 0
   isConnecting: 0
@@ -1909,8 +1901,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resistanceUIObject: {fileID: 91713812}
-  voltageUIObject: {fileID: 0}
-  capacityUIObject: {fileID: 0}
+  voltageUIObject: {fileID: 890937743}
+  capacityUIObject: {fileID: 72293787}
   placeholderCollider: {fileID: 1127953403}
 --- !u!114 &750855263
 MonoBehaviour:

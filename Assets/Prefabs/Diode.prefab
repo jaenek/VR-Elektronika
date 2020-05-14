@@ -148,19 +148,16 @@ MonoBehaviour:
   type: 2
   size: {x: 1, y: 1, z: 1}
   originTransform: {x: 0, y: -1, z: 0}
-<<<<<<< HEAD
   connections:
   - {fileID: 527246106292285061}
   - {fileID: 8474566549039132367}
   high: -1
   low: -1
   on: 0
-=======
   itemType: 5
   resistance: 2
   voltage: 0
   capability: 0
->>>>>>> 78e9a67... add setting properties
 --- !u!65 &7428050156825555514
 BoxCollider:
   m_ObjectHideFlags: 0
