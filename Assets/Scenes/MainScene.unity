@@ -1069,6 +1069,7 @@ MonoBehaviour:
     type: 2}
   placeholderImpossibleMaterial: {fileID: 2100000, guid: 44be8f4c3de36054894bdeaf21625b4a,
     type: 2}
+  propertiesController: {fileID: 750855262}
   isPlacing: 0
   isDestroying: 0
   isConnecting: 0
@@ -1805,8 +1806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resistanceUIObject: {fileID: 91713812}
-  voltageUIObject: {fileID: 0}
-  capacityUIObject: {fileID: 0}
+  voltageUIObject: {fileID: 890937743}
+  capacityUIObject: {fileID: 72293787}
   placeholderCollider: {fileID: 1127953403}
 --- !u!114 &750855263
 MonoBehaviour:
