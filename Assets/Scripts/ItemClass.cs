@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,13 +16,19 @@ public class ItemClass : MonoBehaviour
 
     public Sprite itemImage;
     public string itemName;
-    public ItemType type = ItemType.Other;
-	public Vector3Int size;
-	public Vector3 originTransform = Vector3.down;
-	public List<ConnectionClass> connections;
-	public int high = -1;
-	public int low = -1;
-
+    public Vector3Int size;
+    [HideInInspector]
+    public Vector3 originTransform = Vector3.down;
+    public enum Type { Resistor, Power_Supply, Capacitor, Engine, Switch, Other};
+    public Type itemType = Type.Other;
+    public float resistance;
+    public float voltage;
+    public float capacity;
+    public List<ConnectionClass> connections;
+	  public int high = -1;
+	  public int low = -1;
+}
+	
 	public ConnectionClass GetFreeConnection()
 	{
 		foreach (var conn in connections)

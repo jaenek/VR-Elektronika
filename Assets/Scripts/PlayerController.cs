@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,21 +22,35 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private GameObject circuit;
 	[SerializeField]
+	private GameObject properties;
+	[SerializeField]
 	private Material placeholderPossibleMaterial;
 	[SerializeField]
 	private Material placeholderPossibleConnectionMaterial;
 	[SerializeField]
+	private Material placeholderPropertiesMaterial;
+	[SerializeField]
 	private Material placeholderImpossibleMaterial;
+	[SerializeField]
+	private PropertiesController propertiesController;
 
+	[HideInInspector]
 	public bool isPlacing = false;
+	[HideInInspector]
 	public bool isDestroying = false;
+	[HideInInspector]
 	public bool isConnecting = false;
+	[HideInInspector]
+	public bool isSettingProperties = false;
 	public bool newConnection = false;
 	private Transform placeholder;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
 	private CircuitController circuitController;
+	
 	private Vector3 defaultOriginLocalPosition;
+
+	public enum State {isPlacing, isDestroying, isConnecting, isSettingProperties };
 	void Awake()
     {
 		rg = GetComponent<Rigidbody>();
@@ -49,35 +66,46 @@ public class PlayerController : MonoBehaviour
 	{
 		if(!inventory.activeSelf)
 		{
-			Move();
-			HighlightSelection();
+			if(!properties.activeSelf)
+			{
+				Move();
+				HighlightSelection();
 
-			if (Input.GetButtonDown("Jump"))
-			{
-				TryJump();
-			}
-			else if(Input.GetKeyDown(KeyCode.Q))
-			{
-				ChangeDestroying(true);
+				if (Input.GetButtonDown("Jump"))
+				{
+					TryJump();
+				}
+				else if (Input.GetKeyDown(KeyCode.Q))
+				{
+					ChangeState(true, State.isDestroying);
+				}
+				else if (Input.GetKeyDown(KeyCode.C))
+				{
+					ChangeState(true, State.isConnecting);
+          newConnection = true;
+				}
+				else if (Input.GetKeyDown(KeyCode.R))
+				{
+					ChangeState(true, State.isSettingProperties);
+				}
 
+				if (isPlacing) //Is in placing state
+				{
+					PlaceItem();
+				}
+				else if (isDestroying) //Is in destroing state
+				{
+					DeleteItem();
+				}
+				else if (isConnecting) //Is in connecting state
+				{
+					ConnectItem();
+				}
 			}
-			else if(Input.GetKeyDown(KeyCode.C))
+			
+			if (isSettingProperties) //Is in connecting state
 			{
-				ChangeConnecting(true);
-				newConnection = true;
-			}
-
-			if(isPlacing) //Is in placing state
-			{
-				PlaceItem();
-			}
-			else if(isDestroying) //Is in destroing state
-			{
-				DeleteItem();
-			}
-			else if(isConnecting) //Is in connecting state
-			{
-				ConnectItem();
+				SetPropertiesOfItem();
 			}
 		}
 		else
@@ -86,7 +114,7 @@ public class PlayerController : MonoBehaviour
 			rg.velocity = Vector3.zero;
 		}
 
-		if(Input.GetKeyDown(KeyCode.E))
+		if(Input.GetKeyDown(KeyCode.E) && !properties.activeSelf)
 		{
 			OpenInventory();
 		}
@@ -95,7 +123,6 @@ public class PlayerController : MonoBehaviour
 	void Move()
 	{
 		float xinput = Input.GetAxis("Horizontal");
-		float yinput = Input.GetAxis("Jump");
 		float zinput = Input.GetAxis("Vertical");
 
 		Vector3 dir = new Vector3(xinput, 0, zinput) * moveSpeed;
@@ -154,22 +181,21 @@ public class PlayerController : MonoBehaviour
 		if (!placeholderCollider.isSomethingWithin)
 		{
 			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleMaterial; //Set material to green
-			if (Input.GetButtonDown("Fire1")) //Place item and leave placing state
+			if (Input.GetButtonDown("Fire1") && selection.activeSelf) //Place item and leave placing state
 			{
 				selectionController.PlaceItem();
-				ChangePlacing(false);
-
+				ChangeState(false, State.isPlacing);			
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
 				selectionController.DiscardPlacing();
-				ChangePlacing(false);
+				ChangeState(false, State.isPlacing);
 			}
 		}
 		else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 		{
 			selectionController.DiscardPlacing();
-			ChangePlacing(false);
+			ChangeState(false, State.isPlacing);
 		}
 		else
 		{
@@ -177,21 +203,11 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	//Move to SelectionController.cs
 	public void DeleteItem() //Fires when user is in destroying state
 	{
 		var objectIn = placeholderCollider.objectIn;
 
-		if(objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object
-		{
-			selectionController.placeholderOrigin.transform.position = objectIn.GetComponent<ItemClass>().originTransform; //assign origin of selection placeholder to object origin point
-		}
-		else
-		{
-			selectionController.placeholderOrigin.transform.localPosition = defaultOriginLocalPosition; //unassign placeholder from object
-		}
-		selectionController.SetPlaceholderSize(objectIn != null ? objectIn.GetComponent<ItemClass>().size : Vector3.one); //If any object in, set placeholder size to this object size, otherwise 1
-		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
+		SetPlaceholderTransform(objectIn);
 
 		if (Input.GetButtonDown("Fire1") && objectIn != null) //Place item and leave placing state
 		{
@@ -199,9 +215,8 @@ public class PlayerController : MonoBehaviour
 		}
 		else if (Input.GetButtonDown("Fire2")) //Abandon destroying state
 		{
-			ChangeDestroying(false);
+			ChangeState(false, State.isDestroying);
 		}
-		//placeholder.transform.localPosition = placeholderCollider.lastObjectIn.transform.localPosition;
 
 	}
 
@@ -209,8 +224,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var objectIn = placeholderCollider.objectIn;
 
-		selectionController.SetPlaceholderSize(objectIn != null ? objectIn.GetComponent<ItemClass>().size : Vector3.one); //If any object in, set placeholder size to this object size, otherwise 1
-		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
+		SetPlaceholderTransform(objectIn);
 
 		if (objectIn != null && placeholderCollider.isSomethingWithin)
 		{
@@ -229,33 +243,81 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetButtonDown("Fire2")) //Abandon connecting state
 		{
+			ChangeState(false, State.isConnecting);
 			circuitController.DiscardConnection();
-			ChangeConnecting(false);
 		}
 	}
 
-	public void ChangePlacing(bool state) //Change placing state
+	public void SetPropertiesOfItem()
 	{
-		isPlacing = state;
-		placeholderCollider.isSomethingWithin = false;
-		if(!state)
+		var objectIn = placeholderCollider.objectIn;
+
+		SetPlaceholderTransform(objectIn); //Set postition, scale and rotation of placeholder
+
+		if (Input.GetButtonDown("Fire2") && !properties.activeSelf) //Abandon setting state
 		{
-			selectionController.SetPlaceholderSize(Vector3.one);
+			ChangeState(false, State.isSettingProperties); //exit from setting properties state
+		}
+
+		if (objectIn != null && placeholderCollider.isSomethingWithin ) 
+		{
+			placeholder.GetComponent<MeshRenderer>().material = placeholderPropertiesMaterial; //Set material to yellow
+			if((Input.GetButtonDown("Fire1") && !properties.activeSelf) || (Input.GetButtonDown("Fire2") && properties.activeSelf))
+			{
+				OpenProperties(); //Open properties menu
+			}
+		}
+		else
+		{
+			placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial; //Set material to red
 		}
 	}
 
-	public void ChangeDestroying(bool state) //Change destroying state
+	public void SetPlaceholderTransform(GameObject objectIn)
 	{
-		isDestroying = state;
-		selection.transform.GetChild(0).gameObject.SetActive(state);
-		placeholder.GetComponent<MeshRenderer>().material = state ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
+		if (objectIn != null && placeholderCollider.isSelectionPlaneWithin)//If selection plane is in placeholder and placeholder is assigned to placed object 
+		{
+			selectionController.placeholderOrigin.transform.position = objectIn.GetComponent<ItemClass>().originTransform; //assign origin of selection placeholder to object origin point
+		}
+		else
+		{
+			selectionController.placeholderOrigin.transform.localPosition = defaultOriginLocalPosition; //unassign placeholder from object
+		}
+		selectionController.SetPlaceholderSize(objectIn != null ? objectIn.GetComponent<ItemClass>().size : Vector3.one); //If any object in, set placeholder size to this object size, otherwise 1
+		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
 	}
 
-	public void ChangeConnecting(bool state) //Change connecting state
+
+	public void ChangeState(bool value, State state) //Change setting properties state
 	{
-		isConnecting = state;
-		selection.transform.GetChild(0).gameObject.SetActive(state);
-		placeholder.GetComponent<MeshRenderer>().material = state ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
+		switch (state) //sets boolean to specified state
+		{
+			case State.isPlacing:
+				isPlacing = value;
+				placeholderCollider.isSomethingWithin = false;
+				if (!value)
+				{
+					selectionController.SetPlaceholderSize(Vector3.one);
+				}
+				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
+				break;
+
+			case State.isDestroying:
+				isDestroying = value;
+				placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial;
+				break;
+
+			case State.isConnecting:
+				isConnecting = value;
+				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPossibleConnectionMaterial;
+				break;
+
+			case State.isSettingProperties:
+				isSettingProperties = value;
+				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPropertiesMaterial;
+				break;
+		}
+		selection.transform.GetChild(0).gameObject.SetActive(value);
 	}
 
 	public void OpenInventory() //Open or hide inventory menu
@@ -273,10 +335,26 @@ public class PlayerController : MonoBehaviour
 			}
 			isPlacing = false; //sets default settings
 			isDestroying = false; //sets default settings
+			isConnecting = false; //sets default settings
+			isSettingProperties = false; //sets default settings
 			selectionController.SetPlaceholderSize(Vector3.one); //sets default settings
-			inventory.SetActive(true);
+			inventory.SetActive(!inventory.activeSelf);
 		}
 		placeholderCollider.objectIn = null; //sets default settings
 		placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleMaterial; //sets default settings
 	}
+
+	public void OpenProperties() //Open or hide items properties menu
+	{
+		var item = placeholderCollider.objectIn.GetComponent<ItemClass>(); 
+		
+		if (!properties.activeSelf)
+		{
+			propertiesController.SetValue(item, PropertiesController.Property.Resistance, item.itemType == ItemClass.Type.Resistor ? true : false); //show and sets or hide property bar
+			propertiesController.SetValue(item, PropertiesController.Property.Voltage, item.itemType == ItemClass.Type.Power_Supply ? true : false); //show and sets or hide property bar
+			propertiesController.SetValue(item, PropertiesController.Property.Capacity, item.itemType == ItemClass.Type.Capacitor ? true : false); //show and sets or hide property bar
+		}
+		properties.SetActive(!properties.activeSelf);
+	}
+
 }
