@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 	public bool isConnecting = false;
 	[HideInInspector]
 	public bool isSettingProperties = false;
-
+	public bool newConnection = false;
 	private Transform placeholder;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
 				else if (Input.GetKeyDown(KeyCode.C))
 				{
 					ChangeState(true, State.isConnecting);
+          newConnection = true;
 				}
 				else if (Input.GetKeyDown(KeyCode.R))
 				{
@@ -183,8 +184,7 @@ public class PlayerController : MonoBehaviour
 			if (Input.GetButtonDown("Fire1") && selection.activeSelf) //Place item and leave placing state
 			{
 				selectionController.PlaceItem();
-				ChangeState(false, State.isPlacing);
-				
+				ChangeState(false, State.isPlacing);			
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
@@ -231,7 +231,9 @@ public class PlayerController : MonoBehaviour
 			placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleConnectionMaterial; //Set material to blue
 			if (Input.GetButtonDown("Fire1")) //Add item to circuit
 			{
-				circuitController.AddConnection(ref objectIn);
+				var element = objectIn.GetComponent<ItemClass>();
+				circuitController.AddConnection(element, newConnection);
+				newConnection = false;
 			}
 		}
 		else
@@ -284,6 +286,7 @@ public class PlayerController : MonoBehaviour
 		selectionController.SetPlaceholderSize(objectIn != null ? objectIn.GetComponent<ItemClass>().size : Vector3.one); //If any object in, set placeholder size to this object size, otherwise 1
 		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
 	}
+
 
 	public void ChangeState(bool value, State state) //Change setting properties state
 	{
