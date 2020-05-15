@@ -154,6 +154,10 @@ MonoBehaviour:
   high: -1
   low: -1
   on: 0
+  itemType: 5
+  resistance: 2
+  voltage: 0
+  capability: 0
 --- !u!65 &7428050156825555514
 BoxCollider:
   m_ObjectHideFlags: 0

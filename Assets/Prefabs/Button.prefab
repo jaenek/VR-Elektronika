@@ -52,6 +52,10 @@ MonoBehaviour:
   connections:
   - {fileID: 1867057692698907476}
   - {fileID: 7430646501344222147}
+  itemType: 4
+  resistance: 1
+  voltage: 0
+  capability: 0
 --- !u!54 &-6940150232497641906
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -55,7 +55,10 @@ MonoBehaviour:
   - {fileID: 2616369097351233768}
   high: -1
   low: -1
+  itemType: 1
+  resistance: 1
   voltage: 9
+  capability: 0
 --- !u!54 &8342401578272187742
 Rigidbody:
   m_ObjectHideFlags: 0
