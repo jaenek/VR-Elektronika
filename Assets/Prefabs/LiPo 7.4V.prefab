@@ -236,11 +236,6 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: e0fa62644a28fd54390fe935983467cd, type: 3}
   itemName: LiPo Battery 7.4V
   size: {x: 4, y: 1, z: 2}
-  originTransform: {x: 0, y: -1, z: 0}
-  itemType: 1
-  resistance: 1
-  voltage: 7.4
-  capability: 0
 --- !u!54 &8261481709203353741
 Rigidbody:
   m_ObjectHideFlags: 0

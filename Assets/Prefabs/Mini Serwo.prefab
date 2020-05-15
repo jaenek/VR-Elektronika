@@ -228,11 +228,6 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: d0998e6bc819e1647aca34e530e31d3d, type: 3}
   itemName: Mini Servo
   size: {x: 2, y: 1, z: 1}
-  originTransform: {x: 0, y: -1, z: 0}
-  itemType: 5
-  resistance: 1
-  voltage: 0
-  capability: 0
 --- !u!54 &-6415016252425814278
 Rigidbody:
   m_ObjectHideFlags: 0

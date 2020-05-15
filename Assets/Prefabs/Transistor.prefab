@@ -78,11 +78,6 @@ MonoBehaviour:
   itemImage: {fileID: 21300000, guid: cf3fd092809594647b70c78bcbe25604, type: 3}
   itemName: Transistor
   size: {x: 1, y: 1, z: 1}
-  originTransform: {x: 0, y: -1, z: 0}
-  itemType: 5
-  resistance: 1
-  voltage: 0
-  capability: 0
 --- !u!54 &-657308972684978807
 Rigidbody:
   m_ObjectHideFlags: 0

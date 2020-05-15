@@ -45,7 +45,7 @@ public class ItemList : MonoBehaviour
         selectedItem.transform.position = selection.transform.position; //Set the same postion as parent
         selectedItem.transform.rotation = selection.transform.rotation; //Set the same rotation as parent
         selectedItem.transform.SetParent(selection.transform); // Add this object to selection plane
-        playerController.ChangeState(true, PlayerController.State.isPlacing); //Change state to placing item
+        playerController.ChangePlacing(true); //Change state to placing item
 
     }
 }
