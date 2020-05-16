@@ -252,24 +252,27 @@ public class PlayerController : MonoBehaviour
 	public void SetPropertiesOfItem()
 	{
 		var objectIn = placeholderCollider.objectIn;
+		var type = objectIn ? objectIn.GetComponent<ItemClass>().itemType : ItemClass.Type.Other;
 
 		SetPlaceholderTransform(objectIn); //Set postition, scale and rotation of placeholder
-
 		if (Input.GetButtonDown("Fire2") && !properties.activeSelf) //Abandon setting state
 		{
 			ChangeState(false, State.isSettingProperties); //exit from setting properties state
+			return;
 		}
-
-		if (objectIn != null && placeholderCollider.isSomethingWithin ) 
+		
+		if (objectIn != null && placeholderCollider.isSomethingWithin) 
 		{
-			placeholder.GetComponent<MeshRenderer>().material = placeholderPropertiesMaterial; //Set material to yellow
-			if((Input.GetButtonDown("Fire1") && !properties.activeSelf) || (Input.GetButtonDown("Fire2") && properties.activeSelf))
+			var changable = type == ItemClass.Type.Capacitor || type == ItemClass.Type.Resistor || type == ItemClass.Type.Power_Supply ? true : false;
+			placeholder.GetComponent<MeshRenderer>().material = changable ? placeholderPropertiesMaterial : placeholderImpossibleMaterial; //Set material to yellow
+			if(((Input.GetButtonDown("Fire1") && !properties.activeSelf) || (Input.GetButtonDown("Fire2") && properties.activeSelf)) && changable)
 			{
 				OpenProperties(); //Open properties menu
 			}
 		}
 		else
 		{
+			selectionController.SetPlaceholderSize(Vector3.one);
 			placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial; //Set material to red
 		}
 	}

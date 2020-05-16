@@ -106,9 +106,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2617854257898589051}
-  - component: {fileID: -4186154991130004102}
   - component: {fileID: 7428050156825555514}
   - component: {fileID: 6005915556763153319}
+  - component: {fileID: -3365442795558328999}
   m_Layer: 0
   m_Name: Diode
   m_TagString: Untagged
@@ -131,33 +131,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4186154991130004102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301299822264645992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4a810361a88c74180a5703a6292cc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemImage: {fileID: 21300000, guid: c79e1f771072b2d4c9b4b838b2149f9b, type: 3}
-  itemName: Diode
-  type: 2
-  size: {x: 1, y: 1, z: 1}
-  originTransform: {x: 0, y: -1, z: 0}
-  connections:
-  - {fileID: 527246106292285061}
-  - {fileID: 8474566549039132367}
-  high: -1
-  low: -1
-  on: 0
-  itemType: 5
-  resistance: 2
-  voltage: 0
-  capability: 0
 --- !u!65 &7428050156825555514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -187,6 +160,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &-3365442795558328999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301299822264645992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d27a684d38e6148b0b24b7ad8ed65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 21300000, guid: c79e1f771072b2d4c9b4b838b2149f9b, type: 3}
+  itemName: Diode
+  size: {x: 1, y: 1, z: 1}
+  originTransform: {x: 0, y: -1, z: 0}
+  connections:
+  - {fileID: 527246106292285061}
+  - {fileID: 8474566549039132367}
+  high: -1
+  low: -1
+  itemType: 5
+  resistance: 1
+  voltage: 0
+  capacity: 0
+  on: 0
 --- !u!1 &1950318691087637708
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,8 +231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: {fileID: 0}
   type: 0
-  current: 0
-  voltage: 0
   connected: 0
 --- !u!1 &2119784971082280517
 GameObject:
@@ -280,8 +277,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: {fileID: 0}
   type: 1
-  current: 0
-  voltage: 0
   connected: 0
 --- !u!1 &2348392079453626797
 GameObject:

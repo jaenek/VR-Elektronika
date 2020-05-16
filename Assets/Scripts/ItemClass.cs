@@ -6,28 +6,21 @@ using UnityEngine.UI;
 
 public class ItemClass : MonoBehaviour
 {
-	public enum ItemType
-	{
-		Source,
-		Resistor,
-		Diode,
-		Other
-	}
 
     public Sprite itemImage;
     public string itemName;
-    public ItemType type = ItemType.Other;
 	public Vector3Int size;
     [HideInInspector]
 	public Vector3 originTransform = Vector3.down;
 	public List<ConnectionClass> connections;
 	public int high = -1;
 	public int low = -1;
-    public enum Type { Resistor, Power_Supply, Capacitor, Engine, Switch, Other};
-    public Type itemType;
+    public enum Type { Resistor, Power_Supply, Capacitor, Engine, Switch, Diode, Other};
+    public Type itemType = Type.Other;
     public float resistance;
     public float voltage;
     public float capacity;
+	public bool on = false;
 
 	public ConnectionClass GetFreeConnection()
 	{

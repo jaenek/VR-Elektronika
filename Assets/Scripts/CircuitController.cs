@@ -126,7 +126,7 @@ public class CircuitController : MonoBehaviour
                 if (!components.Contains(conn.element))
                 {
                     components.Add(conn.element);
-                    if (conn.element.type == ItemClass.ItemType.Source)
+                    if (conn.element.itemType == ItemClass.Type.Power_Supply)
                     {
                         sources++;
                     }
@@ -168,13 +168,13 @@ public class CircuitController : MonoBehaviour
 
         foreach (var component in components)
         {
-            Debug.Log(component.type + " high: " + component.high + " low: " + component.low);
+            Debug.Log(component.itemType + " high: " + component.high + " low: " + component.low);
             var high = component.high;
             var low = component.low;
 
-            if (component.type == ItemClass.ItemType.Resistor)
+            if (component.itemType == ItemClass.Type.Resistor)
             {
-                var value = component.GetComponent<ResistorClass>().resistance;
+                var value = component.resistance;
 
                 if (high != 0)
                 {
@@ -191,9 +191,9 @@ public class CircuitController : MonoBehaviour
                     A[low - 1, high - 1] -= 1/value;
                 }
             }
-            else if (component.type == ItemClass.ItemType.Source)
+            else if (component.itemType == ItemClass.Type.Power_Supply)
             {
-                var value = component.GetComponent<SourceClass>().voltage;
+                var value = component.voltage;
 
                 if (high != 0)
                 {
