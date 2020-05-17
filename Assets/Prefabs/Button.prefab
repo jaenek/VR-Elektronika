@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4570969679715079064}
   - component: {fileID: 8821536828585853163}
   - component: {fileID: -6940150232497641906}
+  - component: {fileID: 8446838442750976993}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -52,10 +53,13 @@ MonoBehaviour:
   connections:
   - {fileID: 1867057692698907476}
   - {fileID: 7430646501344222147}
+  high: -1
+  low: -1
   itemType: 4
   resistance: 1
   voltage: 0
-  capability: 0
+  capacity: 0
+  on: 0
 --- !u!54 &-6940150232497641906
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -72,6 +76,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &8446838442750976993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663156609738432907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f30d590355b2230468dcb8c9fdc0f719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatror: {fileID: 0}
+  animatingBody: {fileID: 946383550283231896}
 --- !u!1 &749480356679753310
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +180,7 @@ GameObject:
   - component: {fileID: 3160286616071662614}
   - component: {fileID: 7514749836883797791}
   - component: {fileID: 6554144120781740800}
+  - component: {fileID: 995997944278607879}
   m_Layer: 0
   m_Name: Body6
   m_TagString: Untagged
@@ -177,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946383550283231896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 2493925358034792734}
@@ -230,6 +249,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!95 &995997944278607879
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946383550283231896}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a88a46a8404719746acab84360e4a740, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &958840053470663968
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,9 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  element: {fileID: 0}
   type: 3
-  current: 0
-  voltage: 0
   connected: 0
 --- !u!1 &1894832731370412976
 GameObject:
@@ -530,9 +567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca40f20a8aae941eaba938e7b64cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  element: {fileID: 0}
   type: 3
-  current: 0
-  voltage: 0
   connected: 0
 --- !u!1 &8924370228897506584
 GameObject:

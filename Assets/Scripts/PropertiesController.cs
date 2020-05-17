@@ -10,6 +10,7 @@ public class PropertiesController : MonoBehaviour
     public GameObject voltageUIObject;
     public GameObject capacityUIObject;
     public ColliderState placeholderCollider;
+    public ColliderState2 trigger;
 
     private Slider resistanceSlider;
     private Slider voltageSlider;
@@ -34,7 +35,7 @@ public class PropertiesController : MonoBehaviour
 
     private void onValueChanged(Property propertyName)
     {
-        var itemClass = placeholderCollider.objectIn.GetComponent<ItemClass>();
+        var itemClass = trigger.objectIn.GetComponent<ItemClass>();
         switch (propertyName)
         {
             case Property.Resistance:

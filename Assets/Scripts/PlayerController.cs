@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,30 +35,25 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private PropertiesController propertiesController;
 
-	[HideInInspector]
-	public bool isPlacing = false;
-	[HideInInspector]
-	public bool isDestroying = false;
-	[HideInInspector]
-	public bool isConnecting = false;
 	public bool newConnection = false;
-	[HideInInspector]
-	public bool isSettingProperties = false;
 
 	private Transform placeholder;
+	private ColliderState2 trigger;
 	private ColliderState placeholderCollider;
 	private SelectionController selectionController;
 	private CircuitController circuitController;
 	
 	private Vector3 defaultOriginLocalPosition;
 
-	public enum State {isPlacing, isDestroying, isConnecting, isSettingProperties };
+	public enum State { Default, Placing, Destroying, Connecting, SettingProperties };
+	public State state = State.Default;
 	void Awake()
     {
 		rg = GetComponent<Rigidbody>();
 		inventory.SetActive(false);
 		placeholder = selection.transform.GetChild(0).GetChild(0);
 		placeholderCollider = placeholder.GetComponent<ColliderState>();
+		trigger = selection.transform.GetChild(1).GetComponent<ColliderState2>();
 		selectionController = selection.GetComponent<SelectionController>();
 		circuitController = circuit.GetComponent<CircuitController>();
 		defaultOriginLocalPosition = selectionController.placeholderOrigin.transform.localPosition;
@@ -65,48 +61,56 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
 	{
-		if(!inventory.activeSelf)
+		if (!inventory.activeSelf)
 		{
-			if(!properties.activeSelf)
+			if (!properties.activeSelf)
 			{
 				Move();
 				HighlightSelection();
-
 				if (Input.GetButtonDown("Jump"))
 				{
 					TryJump();
 				}
-				else if (Input.GetKeyDown(KeyCode.Q))
+				else if (Input.GetKeyDown(KeyCode.Q)) //set destroing state
 				{
-					ChangeState(true, State.isDestroying);
+					ChangeState(State.Destroying);
 				}
-				else if (Input.GetKeyDown(KeyCode.C))
+				else if (Input.GetKeyDown(KeyCode.C)) //set coneccting state
 				{
-					ChangeState(true, State.isConnecting);
-				}
-				else if (Input.GetKeyDown(KeyCode.R))
-				{
-					ChangeState(true, State.isSettingProperties);
+					ChangeState(State.Connecting);
 				}
 
-				if (isPlacing) //Is in placing state
+				if (state == State.Placing) //Is in placing state
 				{
 					PlaceItem();
 				}
-				else if (isDestroying) //Is in destroing state
+				else if (state == State.Destroying) //Is in destroing state
 				{
 					DeleteItem();
 				}
-				else if (isConnecting) //Is in connecting state
+				else if (state == State.Connecting) //Is in connecting state
 				{
 					ConnectItem();
 				}
+				else if (Input.GetButtonDown("Fire2") && trigger.objectIn)
+				{
+					ChangeState(State.SettingProperties);
+				}
+				else if (Input.GetButtonDown("Fire1") && trigger.objectIn && trigger.objectIn.GetComponent<ItemClass>().itemType == ItemClass.Type.Switch)
+				{
+					trigger.objectIn.GetComponent<ItemClass>().SwitchOn();
+				}
+				
 			}
-			
-			if (isSettingProperties) //Is in connecting state
+			else
 			{
-				SetPropertiesOfItem();
+				if (Input.GetButtonDown("Fire2")) //exit from setting properties state
+				{
+					ChangeState(State.Default);
+				}
 			}
+
+
 		}
 		else
 		{
@@ -184,19 +188,19 @@ public class PlayerController : MonoBehaviour
 			if (Input.GetButtonDown("Fire1") && selection.activeSelf) //Place item and leave placing state
 			{
 				selectionController.PlaceItem();
-				ChangeState(false, State.isPlacing);
+				ChangeState(State.Default);
 				
 			}
 			else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 			{
 				selectionController.DiscardPlacing();
-				ChangeState(false, State.isPlacing);
+				ChangeState(State.Default);
 			}
 		}
 		else if (Input.GetButtonDown("Fire2")) //Abandon placing state
 		{
 			selectionController.DiscardPlacing();
-			ChangeState(false, State.isPlacing);
+			ChangeState(State.Default);
 		}
 		else
 		{
@@ -212,11 +216,11 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetButtonDown("Fire1") && objectIn != null) //Place item and leave placing state
 		{
-			Destroy(placeholderCollider.objectIn.gameObject); //Destroy object
+			Destroy(objectIn.gameObject); //Destroy object
 		}
 		else if (Input.GetButtonDown("Fire2")) //Abandon destroying state
 		{
-			ChangeState(false, State.isDestroying);
+			ChangeState(State.Default);
 		}
 
 	}
@@ -244,36 +248,22 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetButtonDown("Fire2")) //Abandon connecting state
 		{
-			ChangeState(false, State.isConnecting);
+			ChangeState(State.Default);
 			circuitController.DiscardConnection();
 		}
 	}
 
-	public void SetPropertiesOfItem()
+	public void SetPropertiesOfItem(GameObject objectIn)
 	{
-		var objectIn = placeholderCollider.objectIn;
+		if (!objectIn) return;
 		var type = objectIn ? objectIn.GetComponent<ItemClass>().itemType : ItemClass.Type.Other;
-
-		SetPlaceholderTransform(objectIn); //Set postition, scale and rotation of placeholder
-		if (Input.GetButtonDown("Fire2") && !properties.activeSelf) //Abandon setting state
+		if(type == ItemClass.Type.Capacitor || type == ItemClass.Type.Resistor || type == ItemClass.Type.Power_Supply)
 		{
-			ChangeState(false, State.isSettingProperties); //exit from setting properties state
-			return;
-		}
-		
-		if (objectIn != null && placeholderCollider.isSomethingWithin) 
-		{
-			var changable = type == ItemClass.Type.Capacitor || type == ItemClass.Type.Resistor || type == ItemClass.Type.Power_Supply ? true : false;
-			placeholder.GetComponent<MeshRenderer>().material = changable ? placeholderPropertiesMaterial : placeholderImpossibleMaterial; //Set material to yellow
-			if(((Input.GetButtonDown("Fire1") && !properties.activeSelf) || (Input.GetButtonDown("Fire2") && properties.activeSelf)) && changable)
-			{
-				OpenProperties(); //Open properties menu
-			}
+			OpenProperties(objectIn); //open properties menu
 		}
 		else
 		{
-			selectionController.SetPlaceholderSize(Vector3.one);
-			placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial; //Set material to red
+			ChangeState(State.Default);
 		}
 	}
 
@@ -291,36 +281,37 @@ public class PlayerController : MonoBehaviour
 		selectionController.RotateSelectionTo(0, objectIn != null ? objectIn.gameObject.transform.rotation.eulerAngles.y : 0, 0); //Rotate placeholder to object direction
 	}
 
-	public void ChangeState(bool value, State state) //Change setting properties state
+	public void ChangeState(State newState) //Change setting properties state
 	{
-		switch (state) //sets boolean to specified state
+		state = newState;
+		
+		switch (newState) //sets boolean to specified state
 		{
-			case State.isPlacing:
-				isPlacing = value;
+			case State.Placing:
 				placeholderCollider.isSomethingWithin = false;
-				if (!value)
-				{
-					selectionController.SetPlaceholderSize(Vector3.one);
-				}
-				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPossibleMaterial;
+				placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial ;
 				break;
 
-			case State.isDestroying:
-				isDestroying = value;
+			case State.Destroying:
 				placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial;
 				break;
 
-			case State.isConnecting:
-				isConnecting = value;
-				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPossibleConnectionMaterial;
+			case State.Connecting:
+				placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial;
 				break;
 
-			case State.isSettingProperties:
-				isSettingProperties = value;
-				placeholder.GetComponent<MeshRenderer>().material = value ? placeholderImpossibleMaterial : placeholderPropertiesMaterial;
+			case State.SettingProperties:
+				SetPropertiesOfItem(trigger.objectIn);
+				break;
+
+			case State.Default:
+				placeholder.GetComponent<MeshRenderer>().material = placeholderImpossibleMaterial;
+				selectionController.SetPlaceholderSize(Vector3.one);
+				OpenProperties(null);
 				break;
 		}
-		selection.transform.GetChild(0).gameObject.SetActive(value);
+
+		selection.transform.GetChild(0).gameObject.SetActive(newState == State.Default || newState == State.SettingProperties ? false : true);
 	}
 
 	public void OpenInventory() //Open or hide inventory menu
@@ -336,10 +327,7 @@ public class PlayerController : MonoBehaviour
 			{
 				Destroy(selection.transform.GetChild(2).gameObject); //Destroy previous selection object
 			}
-			isPlacing = false; //sets default settings
-			isDestroying = false; //sets default settings
-			isConnecting = false; //sets default settings
-			isSettingProperties = false; //sets default settings
+			state = State.Default;
 			selectionController.SetPlaceholderSize(Vector3.one); //sets default settings
 			inventory.SetActive(!inventory.activeSelf);
 		}
@@ -347,17 +335,22 @@ public class PlayerController : MonoBehaviour
 		placeholder.GetComponent<MeshRenderer>().material = placeholderPossibleMaterial; //sets default settings
 	}
 
-	public void OpenProperties() //Open or hide items properties menu
+	public void OpenProperties(GameObject objectIn) //Open or hide items properties menu
 	{
-		var item = placeholderCollider.objectIn.GetComponent<ItemClass>(); 
 		
-		if (!properties.activeSelf)
+		if (!properties.activeSelf && objectIn != null)
 		{
+			var item = objectIn.GetComponent<ItemClass>(); 
 			propertiesController.SetValue(item, PropertiesController.Property.Resistance, item.itemType == ItemClass.Type.Resistor ? true : false); //show and sets or hide property bar
 			propertiesController.SetValue(item, PropertiesController.Property.Voltage, item.itemType == ItemClass.Type.Power_Supply ? true : false); //show and sets or hide property bar
 			propertiesController.SetValue(item, PropertiesController.Property.Capacity, item.itemType == ItemClass.Type.Capacitor ? true : false); //show and sets or hide property bar
+			properties.SetActive(true);
 		}
-		properties.SetActive(!properties.activeSelf);
+		else
+		{
+			properties.SetActive(false);
+		}
+		
 	}
 
 }

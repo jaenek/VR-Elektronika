@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2756309509825458919}
   - component: {fileID: 135820891312285786}
   - component: {fileID: 4816237683454666843}
+  - component: {fileID: 329267177641701809}
   m_Layer: 0
   m_Name: Turn
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3219870642980733590}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.139, y: -0.037, z: 0.104}
+  m_LocalRotation: {x: -0.70245266, y: -0.080995575, z: 0.080995575, w: 0.70245266}
+  m_LocalPosition: {x: 0.17734542, y: -0.00015854836, z: 0.104}
   m_LocalScale: {x: 234.30913, y: 234.30913, z: 234.30913}
   m_Children: []
   m_Father: {fileID: 7501207586141451286}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -103.155, y: 89.99999, z: -90}
 --- !u!33 &135820891312285786
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -79,6 +80,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!95 &329267177641701809
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3219870642980733590}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8043c6b8b55a1594bb11b58f2172e30e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6705943764689828304
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,6 +206,7 @@ GameObject:
   - component: {fileID: 7501207586141451286}
   - component: {fileID: 8025331961395343812}
   - component: {fileID: -4318141277693490652}
+  - component: {fileID: 5089991122492673829}
   m_Layer: 0
   m_Name: 'Switch '
   m_TagString: Untagged
@@ -228,7 +249,7 @@ MonoBehaviour:
   connections: []
   high: -1
   low: -1
-  itemType: 6
+  itemType: 4
   resistance: 1
   voltage: 0
   capacity: 0
@@ -249,6 +270,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &5089991122492673829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6792269736420558341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f30d590355b2230468dcb8c9fdc0f719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  animatingBody: {fileID: 3219870642980733590}
 --- !u!1 &7844710289576151028
 GameObject:
   m_ObjectHideFlags: 0

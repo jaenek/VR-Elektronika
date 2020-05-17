@@ -59,4 +59,33 @@ public class ItemClass : MonoBehaviour
 
 		return GetFreeConnection();
 	}
+
+	public void SwitchOn()
+	{
+		switch (itemType)
+		{
+			case Type.Switch:			
+				AnimationController animationController = GetComponent<AnimationController>();
+				on = !on;
+				animationController.SwitchState(on);
+				if (itemName == "Button")
+				{
+					StartCoroutine(OffAfterDelay(2));
+				}
+				break;
+
+			case Type.Diode:
+				on = !on;
+				transform.GetChild(0).GetChild(2).gameObject.SetActive(on);
+				break;
+
+		}
+	}
+
+	IEnumerator OffAfterDelay(float time)
+	{
+		yield return new WaitForSeconds(time);
+		on = !on;
+		GetComponent<AnimationController>().SwitchState(on);
+	}
 }
